@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        User::where('id', id)->first();
+        return User::where('id', id)->first();
     }
 
     /**
