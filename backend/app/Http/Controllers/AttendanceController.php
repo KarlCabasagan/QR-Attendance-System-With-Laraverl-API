@@ -27,9 +27,9 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Attendance $attendance)
+    public function show(string $user_id, string $subject_id)
     {
-        //
+        Attendance::enrollment->where('user_id', $id)->where('subject_id', $subject_id)->get();
     }
 
     /**
