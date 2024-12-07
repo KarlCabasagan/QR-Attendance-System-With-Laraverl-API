@@ -13,7 +13,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        Attendance::all();
+        return Attendance::all();
     }
 
     /**
@@ -29,7 +29,7 @@ class AttendanceController extends Controller
      */
     public function show(string $user_id, string $subject_id)
     {
-        Attendance::enrollment->where('user_id', $id)->where('subject_id', $subject_id)->get();
+        return Attendance::enrollment->where('user_id', $id)->where('subject_id', $subject_id)->get();
     }
 
     /**
