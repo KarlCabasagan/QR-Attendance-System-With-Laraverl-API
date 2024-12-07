@@ -27,9 +27,9 @@ class SubjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Subject $subject)
+    public function show(string $id)
     {
-        //
+        Subject::enrollments->where('user_id', $id)->get();
     }
 
     /**
