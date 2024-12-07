@@ -13,7 +13,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        Attendance::all();
     }
 
     /**
@@ -21,7 +21,7 @@ class AttendanceController extends Controller
      */
     public function store(StoreAttendanceRequest $request)
     {
-        //
+        
     }
 
     /**
