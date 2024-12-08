@@ -7,19 +7,19 @@ import ModalOverlay from './ModalOverlay'
 
 //Modal Contexts
 export const IsModalOnContext = createContext(false)
-export const ModalIdContext = createContext(1) //QR Page Modal
+export const ModalIdContext = createContext(1)
 
 export const SelectedNavBtnContext = createContext(1)
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true)
-  const [userRole, setUserRole] = useState(1)
+  const [userRole, setUserRole] = useState(2)
 
   const [selectedNavBtn, setSelectedNavBtn] = useState(1)
   
   //Modals States
   const [isModalOn, setIsModalOn] = useState(false)
-  const [modalId, setModalId] = useState(1) //QR Page Modal
+  const [modalId, setModalId] = useState(1)
 
   return (
     <IsModalOnContext.Provider value={[isModalOn, setIsModalOn]}>
