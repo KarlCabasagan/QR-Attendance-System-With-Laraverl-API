@@ -5,6 +5,7 @@ import QrPage from "./components/QrPage"
 import StudentSubjectPage from "./components/StudentSubjectPage"
 import ProfilePage from "./components/ProfilePage"
 import StudentPage from "./StudentPage"
+import FacultyPage from "./FacultyPage"
 
 function Dashboard({ userRole, navBtn }) {
 
@@ -25,7 +26,7 @@ function Dashboard({ userRole, navBtn }) {
         <div className="w-11/12 flex flex-col items-center relative">
             <Header dayName={dayName} navBtn={navBtn} />
             <div className="w-full flex flex-col items-center mt-64">
-                {(userRole == 1 ) ? <StudentPage navBtn={navBtn} /> : "none"}
+                {(userRole == 1 ) ? <StudentPage navBtn={navBtn} userRole={userRole} /> : <FacultyPage navBtn={navBtn} userRole={userRole} /> }
             </div>
         </div>
     )
