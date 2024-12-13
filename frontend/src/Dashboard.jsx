@@ -7,7 +7,7 @@ import ProfilePage from "./components/ProfilePage"
 import StudentPage from "./StudentPage"
 import FacultyPage from "./FacultyPage"
 
-function Dashboard({ userRole, navBtn }) {
+function Dashboard({ userRole, navBtn, isLoggedIn, user }) {
 
     const[isModalOn, setIsModalOn] = useContext(IsModalOnContext)
 
@@ -23,10 +23,10 @@ function Dashboard({ userRole, navBtn }) {
     }, [])
 
     return (
-        <div className="w-11/12 flex flex-col items-center relative">
+        <div className={(isLoggedIn ? "flex" : "hidden") + " w-11/12 flex-col items-center relative"}>
             <Header dayName={dayName} navBtn={navBtn} />
             <div className="w-full flex flex-col items-center mt-64">
-                {(userRole == 1 ) ? <StudentPage navBtn={navBtn} userRole={userRole} /> : <FacultyPage navBtn={navBtn} userRole={userRole} /> }
+                {(userRole == 1 ) ? <StudentPage navBtn={navBtn} userRole={userRole} user={user} /> : <FacultyPage navBtn={navBtn} userRole={userRole} user={user} /> }
             </div>
         </div>
     )
