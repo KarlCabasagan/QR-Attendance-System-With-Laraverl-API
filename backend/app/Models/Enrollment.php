@@ -16,12 +16,12 @@ class Enrollment extends Model
         'qr_code',
     ];
 
-    public function users(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
     
-    public function subjects(): BelongsTo
+    public function subject(): BelongsTo
     {
         return $this->belongsTo(Subject::class);
     }
