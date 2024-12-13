@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('subject_id');
             $table->string('day');
             $table->time('time');
+            $table->time('end')->nullable();
             $table->timestamps();
 
             $table->foreign('subject_id')->references('id')->on('subjects');

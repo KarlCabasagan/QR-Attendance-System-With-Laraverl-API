@@ -61,7 +61,7 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'course' => fake()->randomElement(['BSIT', 'BSCS', 'BSBA', 'BED', 'CAS', 'COC', 'COE']),
-                'year' => fake()->randomElement([1, 2, 3, 4]),
+                'year' => fake()->randomElement(['1st Year', '2nd Year', '3rd Year', '4th Year']),
                 'role_id' => '1',
             ];
         });

@@ -16,6 +16,10 @@ class UserController extends Controller
         // return User::with(['subjects' => function ($query) {
         //     $query->with('teacher');
         // }])->where('role_id', 1)->first();
+
+        return User::with(['enrollments' => function ($query) {
+            $query->with('subject')->with('attendances');
+        }])->where('role_id', 1)->first();
     }
 
     /**
