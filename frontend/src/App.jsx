@@ -55,14 +55,9 @@ function App() {
     const data = await res.json()
     
     
-    if(user.role_id == 1) {
       setCurrentSubject(c => data[0])
       setNextSubjects(s => data[1])
       setUserSubjects(u => data[2])
-    } else {
-      setNextSubjects(s => data[0])
-      setUserSubjects(u => data[1])
-    }
   }
 
   useEffect(() => {

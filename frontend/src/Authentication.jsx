@@ -18,7 +18,7 @@ function Authentication({ isLoggedIn }) {
                     <div className="bg-[#E5E4E2] absolute top-[-1rem]">
                         <span className="p-3 text-lg text-gray">or</span>
                     </div>
-                    <span onClick={() => setIsLoginPage(i => !i)} className="m-4 text-lg text-[#9747FF] cursor-pointer">Create an account</span>
+                    <span onClick={() => setIsLoginPage(i => !i)} className="m-4 text-lg text-[#9747FF] cursor-pointer">{isLoginPage ? 'Create an account' : 'Log into an existing account'}</span>
                 </div>
             </div>
         </div>
