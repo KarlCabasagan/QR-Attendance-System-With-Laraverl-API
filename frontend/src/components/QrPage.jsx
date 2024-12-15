@@ -2,7 +2,7 @@ import { useContext } from "react"
 import QRCode from "react-qr-code"
 import { IsModalOnContext, ModalIdContext } from "../App"
 
-function QrPage({ navBtn }) {
+function QrPage({ navBtn, currentSubject }) {
 
     const[isModalOn, setIsModalOn] = useContext(IsModalOnContext)
     const [modalId, setModalId] = useContext(ModalIdContext)
@@ -18,11 +18,11 @@ function QrPage({ navBtn }) {
                 <span className="text-2xl font-semibold">QR Code</span>
             </div>
             <div className="w-full py-3 bg-white rounded-xl shadow flex justify-center items-center">
-                <QRCode value="From hello world to hello lord huhu" style={{ height: "95%", width: "95%" }} />
+                <QRCode value={currentSubject?.enrollments[0].qr_code ?? 'No Current Class'} style={{ height: "95%", width: "95%" }} />
             </div>
             <div onClick={() => handleClick()} className="w-full bg-white mt-5 p-5 rounded-md flex justify-between shadow cursor-pointer">
-                <span className="text-xl">ITF 101 188888</span>
-                <span className="text-xl text-gray">7:30AM</span>
+                <span className="text-xl">{`${currentSubject?.name ?? 'No classes currently scheduled.'} ${currentSubject?.code ?? ''}`}</span>
+                <span className="text-xl text-gray">{currentSubject?.schedules[0].time.slice(0,-3) ?? ''}</span>
             </div>
         </div>
     )
