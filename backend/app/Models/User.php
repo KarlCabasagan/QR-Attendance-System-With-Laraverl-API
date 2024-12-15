@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -69,5 +71,48 @@ class User extends Authenticatable
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);
+    }
+
+    public function getNextSubjectsToday()
+    {
+        $today = Carbon::now();
+        $dayName = $today->format('l');
+        $currentTime = $today->format('H:i');
+
+        return $this->subjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
+                $query->where('day', $dayName)->where('time', '>', $currentTime);
+            })->with(['schedules' => function ($query) use ($dayName) {
+                $query->where('day', $dayName);
+            }])->with(['enrollments' => function ($query) {
+                $query->where('user_id', $this->id);
+            }])->get();
+    }
+
+    public function getCurrentSubject()
+    {
+        $today = Carbon::now();
+        $dayName = $today->format('l');
+        $currentTime = $today->format('H:i');
+
+        return $this->subjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
+                $query->where('day', $dayName)->where('time', '<=', $currentTime)->where('end', '>=', $currentTime);
+            })->with(['schedules' => function ($query) use ($dayName) {
+                $query->where('day', $dayName);
+            }])->with(['enrollments' => function ($query) {
+                $query->where('user_id', $this->id);
+            }])->first();
+    }
+
+    public function getSubjectsByUserId()
+    {
+        if($this->role_id == 1) {
+            return $this->subjects()->with('teacher')->with('schedules')->get();
+        } else {
+            return $this->taughtSubjects()->with(['enrollments' => function ($query) {
+                $query->with('user')->with(['attendances' => function ($query) {
+                    $query->orderBy('date', 'desc');
+                }]);
+            }])->get();
+        }
     }
 }

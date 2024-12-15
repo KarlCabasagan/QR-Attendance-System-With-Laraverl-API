@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use App\Models\User;
+use Carbon\Carbon;
 
 class SubjectController extends Controller
 {
@@ -27,9 +29,19 @@ class SubjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Subject $subject)
+    public function show(string $userId)
     {
-        //
+        $user = User::find($userId);
+
+        $currentSubject = $user->getCurrentSubject();
+        $nextSubjectsToday = $user->getNextSubjectsToday();
+        $userSubjects = $user->getSubjectsByUserId();
+
+        if($user->role_id == 1) {
+            return [$currentSubject, $nextSubjectsToday, $userSubjects];
+        }
+
+        return [$nextSubjectsToday, $userSubjects];
     }
 
     /**
@@ -47,4 +59,9 @@ class SubjectController extends Controller
     {
         //
     }
+
+    // public function currentSubject(string $userId)
+    // {
+
+    // }
 }

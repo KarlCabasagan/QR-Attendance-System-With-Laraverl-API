@@ -28,6 +28,6 @@ class Enrollment extends Model
 
     public function attendances(): HasMany
     {
-        return $this->hasMany(Attendance::class)->chaperone();
+        return $this->hasMany(Attendance::class);
     }
 }
