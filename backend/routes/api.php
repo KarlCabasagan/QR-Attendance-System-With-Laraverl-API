@@ -13,7 +13,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::apiResource('roles', RoleController::class);
-Route::apiResource('users', UserController::class);
+Route::apiResource('users', UserController::class)->middleware(('auth:sanctum'));
 Route::apiResource('subjects', SubjectController::class);
 // Route::apiResource('enrollments', EnrollmentController::class);
 
