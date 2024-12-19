@@ -80,13 +80,24 @@ class User extends Authenticatable
         $currentTime = $today->format('H:i');
 
         if($this->role_id == 1) {
-            return $this->subjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
+            $subjects = $this->subjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
                 $query->where('day', $dayName)->where('time', '>', $currentTime);
             })->with(['schedules' => function ($query) use ($dayName, $currentTime) {
-                $query->where('day', $dayName)->where('time', '>', $currentTime);
+                $query->where('day', $dayName)->where('time', '>', $currentTime)->orderBy('time', 'asc');
             }])->with(['enrollments' => function ($query) {
                 $query->where('user_id', $this->id);
             }])->get();
+
+            $collection = collect($subjects);
+
+            $sortedSubjects = $collection->sortBy(function ($subject) {
+                return $subject['schedules'][0]['time'];
+            });
+
+            $sortedArray = $sortedSubjects->values()->all();
+
+            return $sortedArray;
+            
         } else {
             $subjects = $this->taughtSubjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
                 $query->where('day', $dayName)->where('time', '>', $currentTime);
@@ -100,12 +111,10 @@ class User extends Authenticatable
 
             $collection = collect($subjects);
 
-            // Sort the collection by the first schedule's time
             $sortedSubjects = $collection->sortBy(function ($subject) {
                 return $subject['schedules'][0]['time'];
             });
 
-            // Convert the sorted collection back to an array
             $sortedArray = $sortedSubjects->values()->all();
 
             return $sortedArray;
