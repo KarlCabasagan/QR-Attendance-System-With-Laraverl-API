@@ -1,11 +1,11 @@
 import { useContext, useEffect } from "react"
-import { IsModalOnContext, ModalIdContext, SelectedSubject } from "../App"
+import { IsModalOnContext, ModalIdContext, SelectedSubjectContext } from "../App"
 
 function Subject({ subject }) {
     const [isModalOn, setIsModalOn] = useContext(IsModalOnContext)
     const [modalId, setModalId] = useContext(ModalIdContext)
 
-    const [selectedSubject, setSelectedSubject] = useContext(SelectedSubject)
+    const [selectedSubject, setSelectedSubject] = useContext(SelectedSubjectContext)
 
     const handleClick = (subject) => {
         setIsModalOn(i => true)

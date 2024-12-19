@@ -14,7 +14,7 @@ export const SelectedNavBtnContext = createContext(1)
 export const TokenContext = createContext(null)
 export const UserContext = createContext(null)
 
-export const SelectedSubject = createContext(null)
+export const SelectedSubjectContext = createContext(null)
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'))
@@ -72,14 +72,14 @@ function App() {
   }, [user])
 
   return (
-    <SelectedSubject.Provider value={[selectedSubject, setSelectedSubject]}>
+    <SelectedSubjectContext.Provider value={[selectedSubject, setSelectedSubject]}>
       <UserContext.Provider value={[user, setUser]}>
         <TokenContext.Provider value={[token, setToken]}>
           <IsModalOnContext.Provider value={[isModalOn, setIsModalOn]}>
             <ModalIdContext.Provider value={[modalId, setModalId]}>
               <SelectedNavBtnContext.Provider value={[selectedNavBtn, setSelectedNavBtn]}>
                 <div className="w-screen h-screen max-w-[460px] flex flex-col items-center md:max-w-[460px] bg-[#E5E4E2] relative">
-                  <ModalOverlay isModalOn={isModalOn} modalId={modalId} nextSubjects={nextSubjects} currentSubject={currentSubject} subject={selectedSubject} />
+                  <ModalOverlay isModalOn={isModalOn} modalId={modalId} user={user} nextSubjects={nextSubjects} currentSubject={currentSubject} subject={selectedSubject} />
                   <Authentication isLoggedIn={isLoggedIn} />
                   <Dashboard userRole={userRole} navBtn={selectedNavBtn} isLoggedIn={isLoggedIn} user={user} userSubjects={userSubjects} currentSubject={currentSubject} />
                 </div>
@@ -88,7 +88,7 @@ function App() {
           </IsModalOnContext.Provider>
         </TokenContext.Provider>
       </UserContext.Provider>
-    </SelectedSubject.Provider>
+    </SelectedSubjectContext.Provider>
   )
 }
 

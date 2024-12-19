@@ -18,18 +18,18 @@ function StudentSubjectModal({ modalId, subject }) {
                         </div>
                     </div>
                     <div className="w-full h-1/3 px-1 flex justify-between items-center border-b-2 border-lightgray">
-                        {subject?.schedules.map(schedule => (
+                        {subject?.schedules?.map(schedule => (
                             <SubjectSchedule key={schedule.id} schedule={schedule}  />
                         ))}
                     </div>
                     <div className="w-full h-1/3 px-1 flex justify-between items-center overflow-x-auto scrollbar-thin">
                         <div className="w-1/2 flex flex-col justify-start grow">
                             <span className="font-light mb-1">Instructor</span>
-                            <span className="w-11/12 text-lg truncate">{subject?.teacher.name}</span>
+                            <span className="w-11/12 text-lg truncate">{subject?.teacher?.name}</span>
                         </div>
                         <div className="w-1/2 flex flex-col items-start grow">
                             <span className="font-light mb-1">Email</span>
-                            <span className="text-lg">{subject?.teacher.email}</span>
+                            <span className="text-lg">{subject?.teacher?.email}</span>
                         </div>
                     </div>
                 </div>
