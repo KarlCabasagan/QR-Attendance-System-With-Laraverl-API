@@ -16,8 +16,13 @@ function FacultySubject({ user, userSubject }) {
     }
 
     return (
-        <div onClick={() => handleSubjectClick()} className="w-full bg-white mt-5 p-5 rounded-md flex shadow cursor-pointer">
+        <div onClick={() => handleSubjectClick()} className="w-full bg-white mt-5 p-5 rounded-md flex justify-between items-center shadow cursor-pointer">
             <span className="text-xl">{`${userSubject.name} ${userSubject.code}`}</span>
+            <div className="w-1/2 flex justify-end">
+                {userSubject?.schedules?.map((schedule, index) => (
+                    (index < userSubject.schedules.length - 1) ? <span key={schedule.id} className="truncate">{`${schedule.day.slice(0, 3)},`}&nbsp;</span> : <span key={schedule.id} className="truncate">{`${schedule.day.slice(0, 3)}`}</span>
+                ))}
+            </div>
         </div>
     )
 }

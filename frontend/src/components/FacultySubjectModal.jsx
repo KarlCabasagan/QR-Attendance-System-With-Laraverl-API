@@ -34,7 +34,7 @@ function FacultySubjectModal({ modalId, user, subject }) {
                                 <span className="mr-6">Year</span>
                             </div>
                         </div>
-                        <div className="w-full h-full mt-5 overflow-auto scrollbar-none">
+                        <div className="w-full h-full mt-2 overflow-auto scrollbar-none">
                             {subject?.enrollments?.map(enrollment => (
                                 <Student key={enrollment?.id} student={enrollment.user} enrollment={enrollment} />
                             ))}

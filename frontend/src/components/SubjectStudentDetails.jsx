@@ -36,7 +36,7 @@ function SubjectStudentDetails({ user, subject, enrollment }) {
                                     <div>
                                         <span className="px-1 font-light">Year</span>
                                     </div>
-                                    <span className="text-lg px-1 truncate font-semibold">{enrollment?.user?.course}</span>
+                                    <span className="text-lg px-1 truncate font-semibold">{enrollment?.user?.year}</span>
                                 </div>
                             </div>
                         </div>

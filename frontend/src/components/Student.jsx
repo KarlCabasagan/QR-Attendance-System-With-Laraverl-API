@@ -16,7 +16,7 @@ function Student({ student, enrollment }) {
                     <span className="p-2 text-lg truncate">{student?.name}</span>
                 </div>
                 <div className="flex grow justify-center items-center">
-                    <span className="p-2 text-lg font-semibold truncate">{student?.year}</span>
+                    <span className="p-2 text-lg truncate">{student?.year}</span>
                 </div>
             </div>
         </>
