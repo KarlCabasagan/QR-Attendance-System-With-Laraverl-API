@@ -9,7 +9,7 @@ function AttendanceLog({ attendance }) {
         <div className="w-full h-1/6 flex items-center">
             <div className="w-1/2 flex justify-between items-center">
                 <span className="text-lg font-semibold">{attendance?.date}</span>
-                <span className="grow text-md truncate ml-4">{attendance?.time?.slice(0, -3)}</span>
+                <span className="grow text-lg font-thin truncate ml-4">{attendance?.time?.slice(0, -3)}</span>
             </div>
             <form className="w-6/12 flex">
                 <label className="w-1/2 flex justify-center">

@@ -1,11 +1,12 @@
 import { useContext } from "react"
 import CourseAndYear from "./CourseAndYear"
-import { SelectedNavBtnContext, TokenContext, UserContext } from "../App"
+import { IsLoggedInContext, SelectedNavBtnContext, TokenContext, UserContext } from "../App"
 
 function ProfilePage({ navBtn, userRole, user }) {
 
     const [token, setToken] = useContext(TokenContext)
     const [contextUser, setContextUser] = useContext(UserContext)
+    const [isLoggedIn, setIsLoggedIn] = useContext(IsLoggedInContext)
 
     const [selectedNavBtn, setSelectedNavBtn] = useContext(SelectedNavBtnContext)
 
@@ -19,15 +20,16 @@ function ProfilePage({ navBtn, userRole, user }) {
             }
         })
         
-        const data = await res.json()
+        // const data = await res.json()
 
-        console.log(data)
+        // console.log(data)
 
         if(res.ok) {
+            setIsLoggedIn(i => false)
             setToken(t => null)
             setContextUser(u => null)
             setSelectedNavBtn(s => 1)
-            // console.log(selectedNavBtn)
+            // console.log('logout')
             localStorage.removeItem('token')
         }
     }

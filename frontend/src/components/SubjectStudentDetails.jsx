@@ -10,6 +10,10 @@ function SubjectStudentDetails({ user, subject, enrollment }) {
     const handleOverlayClick = () => {
         setEnrollmentDetailsContext(s => null)
     }
+    
+    const handleOnChange = () => {
+
+    }
 
     return (
         <div className={(enrollment ? "block": "hidden") + " w-full h-full absolute flex justify-center items-center"}>
@@ -67,7 +71,7 @@ function SubjectStudentDetails({ user, subject, enrollment }) {
                                                 <label htmlFor="present" className="text-lg">Present</label>
                                             </div>
                                             <div>
-                                                <input type="radio" name="attendance" id="present" className="peer sr-only" />
+                                                <input onChange={() => handleOnChange()} checked={enrollment?.attendances[0].time ? true : false} type="radio" name="attendance" id="present" className="peer sr-only" />
                                                 <div className="w-4 h-4 mt-1 rounded-full bg-lightgray border-lightpurple border-2 peer-checked:bg-lightpurple"></div>
                                             </div>
                                         </div>
@@ -78,7 +82,7 @@ function SubjectStudentDetails({ user, subject, enrollment }) {
                                                 <label htmlFor="absent" className="text-lg">Absent</label>
                                             </div>
                                             <div>
-                                                <input type="radio" name="attendance" id="absent" className="peer sr-only" />
+                                                <input onChange={() => handleOnChange()} checked={enrollment?.attendances[0].time ? false : true} type="radio" name="attendance" id="absent" className="peer sr-only" />
                                                 <div className="w-4 h-4 mt-1 rounded-full bg-lightgray border-lightpurple border-2 peer-checked:bg-lightpurple"></div>
                                             </div>
                                         </div>
@@ -109,9 +113,11 @@ function SubjectStudentDetails({ user, subject, enrollment }) {
                             </div>
                         </div>
                         <div className="w-full h-full overflow-auto scrollbar-thin">
-                            {enrollment?.attendances?.map(attendance => (
-                                <AttendanceLog key={attendance.id} attendance={attendance} />
-                            ))}
+                            {enrollment?.attendances?.map((attendance, index) => {
+                                if(index !== 0) {
+                                    return (<AttendanceLog key={attendance.id} attendance={attendance} />)
+                                }
+                            })}
                         </div>
                     </div>
                 </div>

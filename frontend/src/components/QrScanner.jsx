@@ -13,11 +13,30 @@ function QrScanner({ navBtn, currentSubject }) {
     }
 
     const handleScan = (qrCode) => {
-        const enrollments = currentSubject.enrollments
+        const enrollments = currentSubject?.enrollments
+        let qrFound = false
 
-        enrollments.map(enrollment => {
-            if(qrCode == enrollment.qr_code) {
-                //make a function that sends the qrcode to the api
+        enrollments?.map((enrollment, index) => {
+
+            if(index < enrollments.length - 1) {
+                if(qrCode === enrollment.qr_code) {
+                    console.log('QR found')
+                    qrFound = true
+                    return
+                }
+                return
+            }
+            if(qrFound === false) {
+                if(qrCode === enrollment.qr_code) {
+                    console.log('QR found')
+                    return
+                } else {
+                    alert('QR Code not Found')
+                    return
+                }
+            } else {
+                qrFound = false
+                return
             }
         })
     }
