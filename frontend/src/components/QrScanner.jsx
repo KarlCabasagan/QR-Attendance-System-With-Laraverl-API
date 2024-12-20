@@ -12,6 +12,10 @@ function QrScanner({ navBtn, currentSubject }) {
         setModalId(i=> 1)
     }
 
+    const recordAttendance = async () => {
+
+    }
+
     const handleScan = (qrCode) => {
         const enrollments = currentSubject?.enrollments
         let qrFound = false
