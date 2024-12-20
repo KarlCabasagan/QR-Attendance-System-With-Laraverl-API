@@ -1,25 +1,30 @@
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
 import SubjectStudentDetails from "./SubjectStudentDetails"
+import Student from "./Student"
 
-export const StudentDetailsContext = createContext(null)
+export const EnrollmentDetailsContext = createContext(null)
 
-function FacultySubjectModal({ modalId }) {
+function FacultySubjectModal({ modalId, user, subject }) {
 
-    const [studentDetails, setStudentDetails] = useState(null)
+    const [enrollmentDetails, setEnrollmentDetails] = useState(null)
 
-    const handleClick = () => {
-        setStudentDetails(s => s = {name: 'John Karl Harley Cabasagan', course: 'BSIT', year: 3})
+    const handleClick = (enrollment) => {
+        setEnrollmentDetails(s => enrollment)
     }
 
+    // useEffect(() => {
+    //     console.log(enrollmentDetails)
+    // })
+
     return (
-        <StudentDetailsContext.Provider value={[studentDetails, setStudentDetails]}>
+        <EnrollmentDetailsContext.Provider value={[enrollmentDetails, setEnrollmentDetails]}>
             <div className={((modalId == 3)? "flex" : "hidden") + " w-full h-full relative justify-center items-center"}>
-                <SubjectStudentDetails studentDetails={studentDetails} />
+                <SubjectStudentDetails user={user} subject={subject} enrollment={enrollmentDetails} />
                 
                 <div className="w-11/12 h-3/6 max-h-full bg-white rounded-lg flex flex-col items-center justify-center z-50">
                     <div className="w-11/12 h-5/6 flex flex-col justify-start items-center relative border-t-2 border-lightgray">
                         <div className="bg-white px-2 absolute top-[-1.10rem]">
-                            <span className="text-xl font-light">ITF101 18888</span>
+                            <span className="text-xl font-light">{`${subject?.name} ${subject?.code}`}</span>
                         </div>
                         <div className="w-full flex mt-1">
                             <div className="w-1/2 flex justify-start">
@@ -30,19 +35,14 @@ function FacultySubjectModal({ modalId }) {
                             </div>
                         </div>
                         <div className="w-full h-full mt-2 overflow-auto scrollbar-none">
-                            <div onClick={() => handleClick()} className="w-full h-14 shadow rounded-md flex justify-between mb-2 cursor-pointer"> 
-                                <div className="w-9/12 flex justify-start items-center">
-                                    <span className="p-2 text-lg truncate">John Karl Harley A. Cabasagan</span>
-                                </div>
-                                <div className="flex grow justify-center items-center">
-                                    <span className="p-2 text-lg font-semibold">3</span>
-                                </div>
-                            </div>
+                            {subject?.enrollments?.map(enrollment => (
+                                <Student key={enrollment?.id} student={enrollment.user} enrollment={enrollment} />
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
-        </StudentDetailsContext.Provider>
+        </EnrollmentDetailsContext.Provider>
     )
 }
 

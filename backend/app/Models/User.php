@@ -79,13 +79,46 @@ class User extends Authenticatable
         $dayName = $today->format('l');
         $currentTime = $today->format('H:i');
 
-        return $this->subjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
+        if($this->role_id == 1) {
+            $subjects = $this->subjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
                 $query->where('day', $dayName)->where('time', '>', $currentTime);
-            })->with(['schedules' => function ($query) use ($dayName) {
-                $query->where('day', $dayName);
+            })->with(['schedules' => function ($query) use ($dayName, $currentTime) {
+                $query->where('day', $dayName)->where('time', '>', $currentTime)->orderBy('time', 'asc');
             }])->with(['enrollments' => function ($query) {
                 $query->where('user_id', $this->id);
             }])->get();
+
+            $collection = collect($subjects);
+
+            $sortedSubjects = $collection->sortBy(function ($subject) {
+                return $subject['schedules'][0]['time'];
+            });
+
+            $sortedArray = $sortedSubjects->values()->all();
+
+            return $sortedArray;
+            
+        } else {
+            $subjects = $this->taughtSubjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
+                $query->where('day', $dayName)->where('time', '>', $currentTime);
+            })->with(['schedules' => function ($query) use ($dayName, $currentTime) {
+                $query->where('day', $dayName)->where('time', '>', $currentTime)->orderBy('time', 'asc');
+            }])->get();
+
+            // return $subjects->sortBy([function ($subject) {
+            //     return $subject->schedules[0]->time;
+            // }])->values()->all();
+
+            $collection = collect($subjects);
+
+            $sortedSubjects = $collection->sortBy(function ($subject) {
+                return $subject['schedules'][0]['time'];
+            });
+
+            $sortedArray = $sortedSubjects->values()->all();
+
+            return $sortedArray;
+        }
     }
 
     public function getCurrentSubject()
@@ -94,13 +127,21 @@ class User extends Authenticatable
         $dayName = $today->format('l');
         $currentTime = $today->format('H:i');
 
-        return $this->subjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
+        if($this->role_id == 1) {
+            return $this->subjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
                 $query->where('day', $dayName)->where('time', '<=', $currentTime)->where('end', '>=', $currentTime);
             })->with(['schedules' => function ($query) use ($dayName) {
                 $query->where('day', $dayName);
             }])->with(['enrollments' => function ($query) {
                 $query->where('user_id', $this->id);
             }])->first();
+        } else {
+            return $this->taughtSubjects()->whereHas('schedules', function ($query) use ($dayName, $currentTime) {
+                $query->where('day', $dayName)->where('time', '<=', $currentTime)->where('end', '>=', $currentTime);
+            })->with(['schedules' => function ($query) use ($dayName) {
+                $query->where('day', $dayName);
+            }])->with('enrollments')->first();
+        }
     }
 
     public function getSubjectsByUserId()
@@ -108,7 +149,7 @@ class User extends Authenticatable
         if($this->role_id == 1) {
             return $this->subjects()->with('teacher')->with('schedules')->get();
         } else {
-            return $this->taughtSubjects()->with(['enrollments' => function ($query) {
+            return $this->taughtSubjects()->with('schedules')->with(['enrollments' => function ($query) {
                 $query->with('user')->with(['attendances' => function ($query) {
                     $query->orderBy('date', 'desc');
                 }]);

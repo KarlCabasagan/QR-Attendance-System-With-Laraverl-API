@@ -37,11 +37,7 @@ class SubjectController extends Controller
         $nextSubjectsToday = $user->getNextSubjectsToday();
         $userSubjects = $user->getSubjectsByUserId();
 
-        if($user->role_id == 1) {
-            return [$currentSubject, $nextSubjectsToday, $userSubjects];
-        }
-
-        return [$nextSubjectsToday, $userSubjects];
+        return [$currentSubject, $nextSubjectsToday, $userSubjects];
     }
 
     /**

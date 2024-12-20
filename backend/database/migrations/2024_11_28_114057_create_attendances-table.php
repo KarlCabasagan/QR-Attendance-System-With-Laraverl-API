@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('enrollment_id');
-            $table->date('date')->unique();
+            $table->date('date');
             $table->time('time')->nullable();
             $table->timestamps();
 
