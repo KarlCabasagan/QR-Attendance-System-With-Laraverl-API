@@ -17,6 +17,10 @@ export const IsLoggedInContext = createContext(false)
 
 export const SelectedSubjectContext = createContext(null)
 
+export const NextSubjectsContext = createContext(null)
+export const CurrentSubjectContext = createContext(null)
+export const UserSubjectsContext = createContext(null)
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'))
 
@@ -81,14 +85,14 @@ function App() {
 
       const intervalId = setInterval(async () => {
         if(!isLoggedIn) {
-          console.log(isLoggedIn)
+          // console.log(isLoggedIn)
           return
         }
 
         await getUser()
-        // console.log(user)
+        // console.log('Updated Data')
         getUserSubjects(user?.id);
-      }, 9000);
+      }, 2000);
     
       return () => clearInterval(intervalId);
     }
@@ -106,25 +110,31 @@ function App() {
   
 
   return (
-    <IsLoggedInContext.Provider value={[isLoggedIn, setIsLoggedIn]}>
-      <SelectedSubjectContext.Provider value={[selectedSubject, setSelectedSubject]}>
-        <UserContext.Provider value={[user, setUser]}>
-          <TokenContext.Provider value={[token, setToken]}>
-            <IsModalOnContext.Provider value={[isModalOn, setIsModalOn]}>
-              <ModalIdContext.Provider value={[modalId, setModalId]}>
-                <SelectedNavBtnContext.Provider value={[selectedNavBtn, setSelectedNavBtn]}>
-                  <div className="w-screen h-screen max-w-[460px] flex flex-col items-center md:max-w-[460px] bg-[#E5E4E2] relative">
-                    <ModalOverlay isModalOn={isModalOn} modalId={modalId} user={user} nextSubjects={nextSubjects} currentSubject={currentSubject} subject={selectedSubject} />
-                    <Authentication isLoggedIn={isLoggedIn} />
-                    <Dashboard userRole={userRole} navBtn={selectedNavBtn} isLoggedIn={isLoggedIn} user={user} userSubjects={userSubjects} currentSubject={currentSubject} />
-                  </div>
-                </SelectedNavBtnContext.Provider>
-              </ModalIdContext.Provider>
-            </IsModalOnContext.Provider>
-          </TokenContext.Provider>
-        </UserContext.Provider>
-      </SelectedSubjectContext.Provider>
-    </IsLoggedInContext.Provider>
+    <UserSubjectsContext.Provider value={[userSubjects, setUserSubjects]}>
+      <CurrentSubjectContext.Provider value={[currentSubject, setCurrentSubject]}>
+        <NextSubjectsContext.Provider value={[nextSubjects, setNextSubjects]}>
+          <IsLoggedInContext.Provider value={[isLoggedIn, setIsLoggedIn]}>
+            <SelectedSubjectContext.Provider value={[selectedSubject, setSelectedSubject]}>
+              <UserContext.Provider value={[user, setUser]}>
+                <TokenContext.Provider value={[token, setToken]}>
+                  <IsModalOnContext.Provider value={[isModalOn, setIsModalOn]}>
+                    <ModalIdContext.Provider value={[modalId, setModalId]}>
+                      <SelectedNavBtnContext.Provider value={[selectedNavBtn, setSelectedNavBtn]}>
+                        <div className="w-screen h-screen max-w-[460px] flex flex-col items-center md:max-w-[460px] bg-[#E5E4E2] relative">
+                          <ModalOverlay isModalOn={isModalOn} modalId={modalId} user={user} nextSubjects={nextSubjects} currentSubject={currentSubject} subject={selectedSubject} />
+                          <Authentication isLoggedIn={isLoggedIn} />
+                          <Dashboard userRole={userRole} navBtn={selectedNavBtn} isLoggedIn={isLoggedIn} user={user} userSubjects={userSubjects} currentSubject={currentSubject} />
+                        </div>
+                      </SelectedNavBtnContext.Provider>
+                    </ModalIdContext.Provider>
+                  </IsModalOnContext.Provider>
+                </TokenContext.Provider>
+              </UserContext.Provider>
+            </SelectedSubjectContext.Provider>
+          </IsLoggedInContext.Provider>
+        </NextSubjectsContext.Provider>
+      </CurrentSubjectContext.Provider>
+    </UserSubjectsContext.Provider>
   )
 }
 

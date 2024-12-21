@@ -6,6 +6,7 @@ function Student({ student, enrollment }) {
     const [enrollmentDetails, setEnrollmentDetails] = useContext(EnrollmentDetailsContext)
 
     const handleClick = (enrollment) => {
+        console.log('clicked')
         setEnrollmentDetails(s => enrollment)
     }
 
