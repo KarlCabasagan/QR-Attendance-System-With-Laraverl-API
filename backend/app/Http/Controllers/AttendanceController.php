@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
@@ -29,15 +31,34 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
-        //
+        return $attendance;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAttendanceRequest $request, Attendance $attendance)
+    public function update(Request $request, Attendance $attendance)
     {
-        //
+        $today = Carbon::now();
+        $currentTime = $today->format('H:i:s');
+
+        if(!$attendance->time && $request->status === 'present') {
+            $attendance->update([
+                'time' => $currentTime
+            ]);
+
+            return $attendance;
+        }
+
+        if($attendance->time && $request->status === 'absent') {
+            $attendance->update([
+                'time' => null
+            ]);
+
+            return $attendance;
+        }
+        
+        return ['message' => 'Cannot change into the same status'];
     }
 
     /**

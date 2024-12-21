@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\RecordController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
@@ -15,8 +17,10 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('roles', RoleController::class);
 Route::apiResource('users', UserController::class)->middleware(('auth:sanctum'));
 Route::apiResource('subjects', SubjectController::class);
+Route::apiResource('attendances', AttendanceController::class);
+Route::put('attendance/{id}', [RecordController::class, 'qrScanner'])->middleware(('auth:sanctum'));
 // Route::apiResource('enrollments', EnrollmentController::class);
 
-Route::post ('/register', [AuthController::class, 'register']);
-Route::post ('/login', [AuthController::class, 'login']);
-Route::post ('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
