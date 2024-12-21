@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import { useContext } from "react"
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { CurrentSubjectContext, IsModalOnContext, ModalIdContext, NextSubjectsContext, TokenContext, UserSubjectsContext } from "../App"
