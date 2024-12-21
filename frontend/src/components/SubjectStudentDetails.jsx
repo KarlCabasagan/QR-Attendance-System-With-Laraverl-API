@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from "react"
 import { EnrollmentDetailsContext } from "./FacultySubjectModal"
 import AttendanceLog from "./AttendanceLog"
@@ -16,12 +18,12 @@ function SubjectStudentDetails({ user, subject, enrollment }) {
     const [currentSubject, setCurrentSubject] = useContext(CurrentSubjectContext)
     const [userSubjects, setUserSubjects] = useContext(UserSubjectsContext)
 
-    const [isPresent, setIsPresent] = useState((enrollment?.attendances[0].time ? true : false) ?? '')
+    const [isPresent, setIsPresent] = useState((enrollment?.attendances[0].time ? true : false) ?? '')//naa diri ang control sa present og absent
 
     const handleOverlayClick = () => {
         setEnrollmentDetailsContext(s => null)
-        setIsModalOnContext(i => false)
-        setModalIdContext(i => false)
+        // setIsModalOnContext(i => false)
+        // setModalIdContext(i => false)
     }
 
     const getUserSubjects = async (id) => {
