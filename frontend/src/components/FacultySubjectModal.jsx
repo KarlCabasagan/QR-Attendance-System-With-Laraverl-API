@@ -1,6 +1,7 @@
-import { createContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import SubjectStudentDetails from "./SubjectStudentDetails"
 import Student from "./Student"
+import { CurrentSubjectContext, NextSubjectsContext, TokenContext, UserSubjectsContext } from "../App"
 
 export const EnrollmentDetailsContext = createContext(null)
 
@@ -8,18 +9,23 @@ function FacultySubjectModal({ modalId, user, subject }) {
 
     const [enrollmentDetails, setEnrollmentDetails] = useState(null)
 
+    const [token, setToken] = useContext(TokenContext)
+
+    // const [nextSubjects, setNextSubjects] = useContext(NextSubjectsContext)
+    // const [currentSubject, setCurrentSubject] = useContext(CurrentSubjectContext)
+    // const [userSubjects, setUserSubjects] = useContext(UserSubjectsContext)
+
     const handleClick = (enrollment) => {
         setEnrollmentDetails(s => enrollment)
     }
 
-    // useEffect(() => {
-    //     console.log(enrollmentDetails)
-    // })
-
+    useEffect(() => {
+        // console.log(enrollmentDetails)
+    })
     return (
         <EnrollmentDetailsContext.Provider value={[enrollmentDetails, setEnrollmentDetails]}>
             <div className={((modalId == 3)? "flex" : "hidden") + " w-full h-full relative justify-center items-center"}>
-                <SubjectStudentDetails user={user} subject={subject} enrollment={enrollmentDetails} />
+                {(enrollmentDetails) ? <SubjectStudentDetails user={user} subject={subject} enrollment={enrollmentDetails} /> : ''}
                 
                 <div className="w-11/12 h-3/6 max-h-full bg-white rounded-lg flex flex-col items-center justify-center z-50">
                     <div className="w-11/12 h-5/6 flex flex-col justify-start items-center relative border-t-2 border-lightgray">
@@ -36,7 +42,7 @@ function FacultySubjectModal({ modalId, user, subject }) {
                         </div>
                         <div className="w-full h-full mt-2 overflow-auto scrollbar-none">
                             {subject?.enrollments?.map(enrollment => (
-                                <Student key={enrollment?.id} student={enrollment.user} enrollment={enrollment} />
+                                <Student key={enrollment?.id} student={enrollment?.user} enrollment={enrollment} />
                             ))}
                         </div>
                     </div>

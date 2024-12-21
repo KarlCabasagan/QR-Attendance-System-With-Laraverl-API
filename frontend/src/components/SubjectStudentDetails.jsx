@@ -1,19 +1,84 @@
 import { useContext, useEffect, useState } from "react"
 import { EnrollmentDetailsContext } from "./FacultySubjectModal"
 import AttendanceLog from "./AttendanceLog"
+import { CurrentSubjectContext, IsModalOnContext, ModalIdContext, NextSubjectsContext, TokenContext, UserSubjectsContext } from "../App"
 
 function SubjectStudentDetails({ user, subject, enrollment }) {
+    const [isModalOnContext, setIsModalOnContext] = useContext(IsModalOnContext)
+    const [modalIdContext, setModalIdContext] = useContext(ModalIdContext)
 
     const [enrollmentDetailsContext, setEnrollmentDetailsContext] = useContext(EnrollmentDetailsContext)
     const [viewAttendance, setViewAttendance] = useState(false)
 
+    const [token, setToken] = useContext(TokenContext)
+
+    const [nextSubjects, setNextSubjects] = useContext(NextSubjectsContext)
+    const [currentSubject, setCurrentSubject] = useContext(CurrentSubjectContext)
+    const [userSubjects, setUserSubjects] = useContext(UserSubjectsContext)
+
+    const [isPresent, setIsPresent] = useState((enrollment?.attendances[0].time ? true : false) ?? '')
+
     const handleOverlayClick = () => {
         setEnrollmentDetailsContext(s => null)
+        setIsModalOnContext(i => false)
+        setModalIdContext(i => false)
     }
-    
-    const handleOnChange = () => {
 
+    const getUserSubjects = async (id) => {
+        if (!user?.id) {
+          return
+        }
+        const res = await fetch(`/api/subjects/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        })
+        const data = await res.json()
+        
+        
+          setCurrentSubject(c => data[0])
+          setNextSubjects(s => data[1])
+          setUserSubjects(u => data[2])
+      }
+
+    useEffect(() => {
+        enrollmentDetailsContext ?? getUserSubjects(subject?.id)
+    }, [enrollmentDetailsContext])
+
+    const RecordData = async (pa, id) => {
+        const content = {
+            status: pa
+        }
+
+        const res = await fetch(`/api/attendances/${id}`, {
+            method: 'put',
+            body: JSON.stringify(content),
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
     }
+
+    const handleClick = (tf, id) => {
+        if(tf) {
+            setIsPresent(i => true)
+            RecordData('present', id)
+        } else {
+            setIsPresent(i => false)
+            RecordData('absent', id)
+        }
+    }
+
+    useEffect(() => {
+        // console.log(enrollment?.attendances[0].time)
+        // setIsPresent(i => enrollment?.attendances[0].time ? true : false)
+        // getUpdatedData(enrollment?.attendances[0].id)
+        setIsPresent(enrollmentDetailsContext?.attendances[0].time ?? false)
+    }, [enrollment])
+
+    // useEffect(() => {
+        
+    // }, [isPresent])
 
     return (
         <div className={(enrollment ? "block": "hidden") + " w-full h-full absolute flex justify-center items-center"}>
@@ -71,8 +136,9 @@ function SubjectStudentDetails({ user, subject, enrollment }) {
                                                 <label htmlFor="present" className="text-lg">Present</label>
                                             </div>
                                             <div>
-                                                <input onChange={() => handleOnChange()} checked={enrollment?.attendances[0].time ? true : false} type="radio" name="attendance" id="present" className="peer sr-only" />
-                                                <div className="w-4 h-4 mt-1 rounded-full bg-lightgray border-lightpurple border-2 peer-checked:bg-lightpurple"></div>
+                                                <div onClick={async () => handleClick(true, await enrollmentDetailsContext?.attendances[0].id)} className={(isPresent ? "bg-lightpurple" : "bg-white") + " w-4 h-4 border-2 mt-1 border-lightpurple rounded-full"}></div>
+                                                {/* <input onChange={(e) => handleOnChange(e)} checked={enrollment?.attendances[0].time ? true : false} type="radio" value={true} name="status" className="peer sr-only" />
+                                                <div className="w-4 h-4 mt-1 rounded-full bg-lightgray border-lightpurple border-2 peer-checked:bg-lightpurple"></div> */}
                                             </div>
                                         </div>
                                     </div>
@@ -82,8 +148,9 @@ function SubjectStudentDetails({ user, subject, enrollment }) {
                                                 <label htmlFor="absent" className="text-lg">Absent</label>
                                             </div>
                                             <div>
-                                                <input onChange={() => handleOnChange()} checked={enrollment?.attendances[0].time ? false : true} type="radio" name="attendance" id="absent" className="peer sr-only" />
-                                                <div className="w-4 h-4 mt-1 rounded-full bg-lightgray border-lightpurple border-2 peer-checked:bg-lightpurple"></div>
+                                                <div onClick={async () => handleClick(false, await enrollmentDetailsContext?.attendances[0].id)} className={(isPresent ? "bg-white" : "bg-lightpurple") + " w-4 h-4 border-2 mt-1 border-lightpurple rounded-full"}></div>
+                                                {/* <input onChange={(e) => handleOnChange(e)} type="radio" value={false} name="status" className="peer sr-only" />
+                                                <div className="w-4 h-4 mt-1 rounded-full bg-lightgray border-lightpurple border-2 peer-checked:bg-lightpurple"></div> */}
                                             </div>
                                         </div>
                                     </div>
